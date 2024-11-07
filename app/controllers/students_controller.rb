@@ -7,14 +7,15 @@ class StudentsController < ApplicationController
 
   def show
     the_id = params.fetch("path_id")
-    @student = Student.where({:id => the_id }).at(0)
+    matching_student = Student.where({ :id => the_id })
+    @student = matching_student.at(0)
 
     render({ :template => "students/show" })
   end
 
   def create
     @student = Student.new
-    @student.first_name = params.fetch("query_first_name")
+    @student.first_name = params.fetch("query_name")
     @student.last_name = params.fetch("query_last_name")
     @student.email = params.fetch("query_email")
 
@@ -30,7 +31,7 @@ class StudentsController < ApplicationController
     the_id = params.fetch("path_id")
     @student = Student.where({ :id => the_id }).at(0)
 
-    @student.first_name = params.fetch("query_first_name")
+    @student.first_name = params.fetch("query_name")
     @student.last_name = params.fetch("query_last_name")
     @student.email = params.fetch("query_email")
 
@@ -38,7 +39,7 @@ class StudentsController < ApplicationController
       @student.save
       redirect_to("/students/#{@student.id}", { :notice => "Student updated successfully."} )
     else
-      redirect_to("/students/#{@student.id}", { :alert => "Student failed to update successfully." })
+      redirect_to("/students/#{@student.id}", { :notice => "Student failed to update successfully." })
     end
   end
 
